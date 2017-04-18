@@ -1,5 +1,5 @@
 class SurvivorsController < ApplicationController
-  before_action :set_survivor, only: [:show, :update, :destroy]
+  before_action :set_survivor, only: [:show, :update, :destroy, :report_infection]
 
   # GET /survivors
   def index
@@ -10,7 +10,7 @@ class SurvivorsController < ApplicationController
 
   # GET /survivors/1
   def show
-    render json: @survivor#.serialize
+    render json: @survivor
   end
 
   # POST /survivors
@@ -33,9 +33,13 @@ class SurvivorsController < ApplicationController
     end
   end
 
-  # DELETE /survivors/1
-  def destroy
-    @survivor.destroy
+  # POST /survivors/1/report_infection
+  def report_infection
+    if @survivor.report_infection(params[:infected_id])
+      render json: { message: 'Your report has been registered.' }, status: :created
+    else
+      render json: { errors: @survivor.errors }, status: :unprocessable_entity
+    end
   end
 
   private

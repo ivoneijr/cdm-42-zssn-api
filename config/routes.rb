@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
-  resources :survivors
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+  resources :survivors do
+    post 'report_infection' => 'survivors#report_infection', on: :member
+  end
 end
