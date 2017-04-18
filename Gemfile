@@ -18,6 +18,9 @@ gem 'puma', '~> 3.0'
 # ActiveModelSerializers
 gem 'active_model_serializers', '~> 0.10.0'
 
+# Annotates Rails/ActiveRecord Models, routes, fixtures, and others based on the database schema.
+gem 'annotate', '~> 2.7', '>= 2.7.1'
+
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 3.0'
 # Use ActiveModel has_secure_password
