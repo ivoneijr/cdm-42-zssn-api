@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
-  resources :survivors do
-    post 'report_infection' => 'survivors#report_infection', on: :member
+
+  namespace :api do
+    namespace :v1 do
+      resources :survivors do
+        post 'report_infection' => 'survivors#report_infection', on: :member
+      end
+    end
   end
 end
