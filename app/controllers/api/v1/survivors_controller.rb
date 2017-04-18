@@ -1,19 +1,19 @@
 class API::V1::SurvivorsController < ApplicationController
   before_action :set_survivor, only: [:show, :update, :destroy, :report_infection]
 
-  # GET /survivors
+  # GET /survivors/api/v1
   def index
     @survivors = Survivor.all
 
     render json: @survivors
   end
 
-  # GET /survivors/1
+  # GET /survivors/api/v1/1
   def show
     render json: @survivor
   end
 
-  # POST /survivors
+  # POST /survivors/api/v1
   def create
     @survivor = Survivor.new(survivor_params)
 
@@ -24,7 +24,7 @@ class API::V1::SurvivorsController < ApplicationController
     end
   end
 
-  # PATCH/PUT /survivors/1
+  # PATCH/PUT /survivors/api/v1/1
   def update
     if @survivor.update_location(survivor_params)
       render json: @survivor
@@ -33,7 +33,7 @@ class API::V1::SurvivorsController < ApplicationController
     end
   end
 
-  # POST /survivors/1/report_infection
+  # POST /survivors/api/v1/1/report_infection
   def report_infection
     if @survivor.report_infection(params[:infected_id])
       render json: { message: 'Your report has been registered.' }, status: :created
