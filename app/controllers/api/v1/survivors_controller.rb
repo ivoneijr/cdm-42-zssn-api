@@ -18,7 +18,7 @@ class API::V1::SurvivorsController < ApplicationController
     @survivor = Survivor.new(survivor_params)
 
     if @survivor.save
-      render json: @survivor, status: :created, location: @survivor
+      render json: @survivor, status: :created, location: api_v1_survivor_url(@survivor)
     else
       render json: @survivor.errors, status: :unprocessable_entity
     end
@@ -50,6 +50,17 @@ class API::V1::SurvivorsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def survivor_params
-      params.require(:survivor).permit(:name, :age, :gender, :last_latitude, :last_longitude)
+      params.require(:survivor).permit(
+          :name,
+          :age,
+          :gender,
+          :last_latitude,
+          :last_longitude,
+          inventories_attributes: [
+              :id,
+              :quantity,
+              :survivor_id,
+              :item_id
+          ])
     end
 end

@@ -11,10 +11,14 @@
 #
 
 class Inventory < ApplicationRecord
-  belongs_to :item
-  belongs_to :survivor
+
+  belongs_to :survivor, optional: true
+  belongs_to :item, optional: true
+
+  accepts_nested_attributes_for :item
 
   def total_points
+    return 0 unless item
     quantity * item.points
   end
 end

@@ -45,9 +45,9 @@ ActiveRecord::Schema.define(version: 20170417213912) do
     t.string   "gender",         limit: 1
     t.string   "last_latitude"
     t.string   "last_longitude"
-    t.boolean  "infected"
-    t.datetime "created_at",               null: false
-    t.datetime "updated_at",               null: false
+    t.boolean  "infected",                 default: false
+    t.datetime "created_at",                               null: false
+    t.datetime "updated_at",                               null: false
   end
 
 end

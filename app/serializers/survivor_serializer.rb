@@ -1,6 +1,6 @@
 class SurvivorSerializer < ActiveModel::Serializer
   attributes :id, :name, :age, :gender, :last_latitude, :last_longitude, :infected, :inventory_points
-  has_many :inventory, unless: :infected?
+  has_many :inventories, unless: :infected?
 
   def infected?
     object.infected
@@ -8,7 +8,7 @@ class SurvivorSerializer < ActiveModel::Serializer
 
   def inventory_points
     total = 0
-    object.inventory.each do |i|
+    object.inventories.each do |i|
       total = total + i.total_points
     end
     total

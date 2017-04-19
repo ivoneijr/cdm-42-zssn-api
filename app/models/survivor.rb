@@ -17,10 +17,9 @@ class Survivor < ApplicationRecord
   has_many :reporter_from, class_name: 'InfectionReport', foreign_key: 'reporter_id'
   has_many :infected_from, class_name: 'InfectionReport', foreign_key: 'infected_id'
   has_many :inventories
+  has_many :items, :through => :inventories
   
   accepts_nested_attributes_for :inventories
-  
-  alias_attribute :inventory, :inventories
   
   def update_location(survivor_params)
     self.update(last_latitude: survivor_params[:last_latitude], last_longitude: survivor_params[:last_longitude])
