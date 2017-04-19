@@ -12,8 +12,8 @@ class SurvivorSerializer < ActiveModel::Serializer
       total = total + i.total_points
     end
     total
-  end  
-  
+  end
+
   class InventorySerializer < ActiveModel::Serializer
     attributes :id, :quantity, :item
   end

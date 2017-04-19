@@ -17,7 +17,7 @@ class InfectionReport < ApplicationRecord
 
   def verify_infectation
     survivor = Survivor.find(self.infected_id)
-    survivor.update!(infected: true) if InfectionReport.where(infected_id: survivor.id).count == 3 
+    survivor.update!(infected: true) if InfectionReport.where(infected_id: survivor.id).count == 3
   end
 
 end

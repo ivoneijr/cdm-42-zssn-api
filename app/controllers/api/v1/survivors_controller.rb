@@ -43,24 +43,24 @@ class API::V1::SurvivorsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_survivor
-      @survivor = Survivor.find(params[:id])
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_survivor
+    @survivor = Survivor.find(params[:id])
+  end
 
-    # Only allow a trusted parameter "white list" through.
-    def survivor_params
-      params.require(:survivor).permit(
-          :name,
-          :age,
-          :gender,
-          :last_latitude,
-          :last_longitude,
-          inventories_attributes: [
-              :id,
-              :quantity,
-              :survivor_id,
-              :item_id
-          ])
-    end
+  # Only allow a trusted parameter "white list" through.
+  def survivor_params
+    params.require(:survivor).permit(
+        :name,
+        :age,
+        :gender,
+        :last_latitude,
+        :last_longitude,
+        inventories_attributes: [
+            :id,
+            :quantity,
+            :survivor_id,
+            :item_id
+        ])
+  end
 end
