@@ -1,32 +1,61 @@
 class Report
 
-  def self.build
-    infecteds = Survivor.where(infected: true)
-    not_infecteds = Survivor.where(infected: false)
+  def self.build(types)
+    report = []
+    types = ReportsHelper.all_types unless types
 
-    {
-        total_survivors: Survivor.count.to_f,
-        infecteds: {
-            total: infecteds.count.to_f,
-            percentage: get_percentage(infecteds),
-            survivors: infecteds.as_json(only: [:id, :name])
-        },
-        not_infecteds: {
-            total: not_infecteds.count.to_f,
-            percentage: get_percentage(not_infecteds),
-            survivors: not_infecteds.as_json(only: [:id, :name])
-        },
-        items_average_by_survivor: {
-          water: average_for(:water),
-          food:  average_for(:food),
-          medication:  average_for(:medication),
-          ammunition:  average_for(:ammunition)
-        }
-    }
+    types.each do |type|
+      report.push(get_report_for(type)) if types.include?(type)
+    end
+
+    report
   end
 
-  def self.get_percentage(collection)
-    (collection.count.to_f / Survivor.count.to_f * 100).round(2)
+  def self.get_report_for(symbol)
+    case symbol
+      when :total_survivors
+        {
+            type: symbol.to_s,
+            total: Survivor.count.to_f
+        }
+
+      when :infected
+        {
+            type: symbol.to_s,
+            data: {
+                total: Survivor.infected.count.to_f,
+                percentage: ReportsHelper.get_percentage(Survivor.infected),
+                survivors: Survivor.infected.as_json(only: [:id, :name])
+            }
+        }
+      when :not_infected
+        {
+            type: symbol.to_s,
+            data: {
+                total: Survivor.not_infected.count.to_f,
+                percentage: ReportsHelper.get_percentage(Survivor.not_infected),
+                survivors: Survivor.not_infected.as_json(only: [:id, :name])
+            }
+        }
+      when :items_average_by_survivor
+        {
+            type: symbol.to_s,
+            data: {
+                water: average_for(:water),
+                food: average_for(:food),
+                medication: average_for(:medication),
+                ammunition: average_for(:ammunition)
+            }
+        }
+      when :lost_points
+        {
+            type: symbol.to_s,
+            data: {
+                by_infected_survivors: ReportsHelper.sum_points(Survivor.infected)
+            }
+        }
+
+    end
   end
 
   def self.average_for(symbol)

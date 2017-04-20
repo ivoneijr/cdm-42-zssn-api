@@ -21,16 +21,26 @@ class Survivor < ApplicationRecord
 
   accepts_nested_attributes_for :inventories
 
+  scope :infected, -> { where(infected: true) }
+  scope :not_infected, -> { where(infected: false) }
+
   def update_location(survivor_params)
-    self.update(last_latitude: survivor_params[:last_latitude], last_longitude: survivor_params[:last_longitude])
+    self.update!(last_latitude: survivor_params[:last_latitude], last_longitude: survivor_params[:last_longitude])
   end
 
   def report_infection(infected_survivor_id)
     if infected_survivor = Survivor.find_by_id(infected_survivor_id)
-      InfectionReport.create(reporter: self, infected: infected_survivor)
+      InfectionReport.create!(reporter: self, infected: infected_survivor)
     else
       errors.add(:reported_survivor, "Reported survivor with id #{infected_survivor_id} was not found.")
       return false
     end
   end
+
+  def total_points
+    total = 0
+    inventories.each { |i| total = total + i.total_points }
+    total
+  end
+
 end
