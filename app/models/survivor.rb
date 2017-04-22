@@ -17,7 +17,7 @@ class Survivor < ApplicationRecord
   has_many :reporter_from, class_name: 'InfectionReport', foreign_key: 'reporter_id'
   has_many :infected_from, class_name: 'InfectionReport', foreign_key: 'infected_id'
   has_many :inventories
-  has_many :items, :through => :inventories
+  has_many :items, through: :inventories
 
   accepts_nested_attributes_for :inventories
 
@@ -41,6 +41,12 @@ class Survivor < ApplicationRecord
     total = 0
     inventories.each { |i| total = total + i.total_points }
     total
+  end
+
+  def can_trade?
+    return true unless self.infected
+    errors.add(:can_not_trade, "#{ name } can't make trades, survivor INFECTED.")
+    false
   end
 
 end
