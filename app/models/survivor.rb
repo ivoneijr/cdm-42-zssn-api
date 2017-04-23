@@ -14,6 +14,8 @@
 #
 
 class Survivor < ApplicationRecord
+  include Concerns::SurvivorItemSwapSupport
+
   has_many :reporter_from, class_name: 'InfectionReport', foreign_key: 'reporter_id'
   has_many :infected_from, class_name: 'InfectionReport', foreign_key: 'infected_id'
   has_many :inventories
@@ -23,6 +25,9 @@ class Survivor < ApplicationRecord
 
   scope :infected, -> { where(infected: true) }
   scope :not_infected, -> { where(infected: false) }
+
+  attr_accessor :swap_items
+  attr_accessor :swap_points
 
   def update_location(survivor_params)
     self.update!(last_latitude: survivor_params[:last_latitude], last_longitude: survivor_params[:last_longitude])
@@ -43,10 +48,18 @@ class Survivor < ApplicationRecord
     total
   end
 
-  def can_trade?
-    return true unless self.infected
-    errors.add(:can_not_trade, "#{ name } can't make trades, survivor INFECTED.")
-    false
+  #TODO:
+  def remove_proposed_items
+    swap_items.each do |si|
+      Invent
+      inventories.each do |i|
+        if i.item_id == si.id
+
+
+        end
+      end
+    end
+    p 'asdad'
   end
 
 end

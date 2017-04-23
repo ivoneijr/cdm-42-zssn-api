@@ -1,5 +1,7 @@
 class API::V1::ItemsController < ApplicationController
-  before_action :set_dealers, only: [:trade]
+  include ItemsHelper
+
+  before_action :load_dealers_and_validations, only: [:trade]
 
   # GET /api/v1/items
   def index
@@ -8,10 +10,24 @@ class API::V1::ItemsController < ApplicationController
 
   # POST /api/v1/items/trade
   def trade
-    render json: { ok: "¯\_(ツ)_/¯"}
+    unless @trade_errors.empty?
+      render json: { errors: @trade_errors }, status: :unprocessable_entity
+    else
+      render json: { ok: "¯\_(ツ)_/¯"}, status: :ok
+    end
   end
 
-  def set_dealers
+  private
+    def load_dealers_and_validations
+      @trade_errors = []
+      @dealers = get_dealers(params)
 
-  end
+      if @dealers.count == 2
+        make_swap if can_trade? && equal_points? && can_swap?
+      end
+    end
+
+    def make_swap
+      @dealers.each { |dealer| dealer.update_inventory(@dealers) }
+    end
 end
