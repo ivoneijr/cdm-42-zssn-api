@@ -68,7 +68,7 @@ describe API::V1::ItemsController do
       Survivor.first.update(infected: false)
     end
 
-    it 'should not have an agreement if any survivors dont have the correct number of items in your inventory' do
+    it 'should not have an trade if any survivors dont have the correct number of items in your inventory' do
       deal = {
           dealer_1: { id: 1, swap_items: [ { id: 1, quantity: 22 }, { id: 2, quantity: 1 } ] },
           dealer_2: { id: 2, swap_items: [ { id: 3, quantity: 10 } ] }
@@ -79,7 +79,7 @@ describe API::V1::ItemsController do
       expect(response.status).to eq 422
     end
 
-    it 'should not have an agreement if the exchange points are not equal' do
+    it 'should not have an trade if the exchange points are not equal' do
       deal = {
           dealer_1: { id: 1, swap_items: [ { id: 1, quantity: 1 }, { id: 2, quantity: 1 } ] },
           dealer_2: { id: 2, swap_items: [ { id: 3, quantity: 10 } ] }
