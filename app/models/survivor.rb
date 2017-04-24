@@ -30,6 +30,9 @@ class Survivor < ApplicationRecord
   attr_accessor :swap_items_new
   attr_accessor :swap_points
 
+  validates :name, :age, :gender, :last_latitude, :last_longitude, presence: true, on: :create
+  validates :last_latitude, :last_longitude, presence: true, on: :update
+
   def update_location(survivor_params)
     self.update!(last_latitude: survivor_params[:last_latitude], last_longitude: survivor_params[:last_longitude])
   end
