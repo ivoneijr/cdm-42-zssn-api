@@ -53,5 +53,41 @@ describe API::V1::ItemsController do
       expect(ari.inventories.joins(:item).where(quantity: 2, items: {description: 'water'}).count).to eq 1
       expect(ari.inventories.joins(:item).where(quantity: 1, items: {description: 'medication'}).count).to eq 1
     end
+
+    it 'should not have a deal with 1 survivor infected' do
+      Survivor.first.update(infected: true)
+      deal = {
+          dealer_1: { id: 1, swap_items: [ { id: 1, quantity: 2 }, { id: 2, quantity: 1 } ] },
+          dealer_2: { id: 2, swap_items: [ { id: 3, quantity: 10 } ] }
+      }
+
+      post :trade, params: deal
+
+      expect(response.status).to eq 422
+
+      Survivor.first.update(infected: false)
+    end
+
+    it 'should not have an agreement if any survivors dont have the correct number of items in your inventory' do
+      deal = {
+          dealer_1: { id: 1, swap_items: [ { id: 1, quantity: 22 }, { id: 2, quantity: 1 } ] },
+          dealer_2: { id: 2, swap_items: [ { id: 3, quantity: 10 } ] }
+      }
+
+      post :trade, params: deal
+
+      expect(response.status).to eq 422
+    end
+
+    it 'should not have an agreement if the exchange points are not equal' do
+      deal = {
+          dealer_1: { id: 1, swap_items: [ { id: 1, quantity: 1 }, { id: 2, quantity: 1 } ] },
+          dealer_2: { id: 2, swap_items: [ { id: 3, quantity: 10 } ] }
+      }
+
+      post :trade, params: deal
+
+      expect(response.status).to eq 422
+    end
   end
 end
