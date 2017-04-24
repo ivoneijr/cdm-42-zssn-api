@@ -13,7 +13,7 @@ class API::V1::ItemsController < ApplicationController
     unless @trade_errors.empty?
       render json: { errors: @trade_errors }, status: :unprocessable_entity
     else
-      render json: { ok: "¯\_(ツ)_/¯"}, status: :ok
+      render json: { message: 'Successful items trade.'}, status: :ok
     end
   end
 
@@ -28,6 +28,11 @@ class API::V1::ItemsController < ApplicationController
     end
 
     def make_swap
-      @dealers.each { |dealer| dealer.update_inventory(@dealers) }
+      ActiveRecord::Base.transaction do
+        @dealers.each do |dealer|
+          dealer.remove_proposed_items
+          dealer.add_or_update_new_items
+        end
+      end
     end
 end

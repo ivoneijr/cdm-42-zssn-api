@@ -45,15 +45,5 @@ module Concerns
       (occurrences.count == swap_items.count) ? true : false
     end
 
-    #TODO:
-    def update_inventory(dealers)
-      dealer_1 = dealers.first
-      dealer_2 = dealers.last
-
-      dealer_1.remove_proposed_items
-      #remover os propostos
-      #adicionar os novos
-    end
-
   end
 end

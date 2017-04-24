@@ -27,6 +27,7 @@ class Survivor < ApplicationRecord
   scope :not_infected, -> { where(infected: false) }
 
   attr_accessor :swap_items
+  attr_accessor :swap_items_new
   attr_accessor :swap_points
 
   def update_location(survivor_params)
@@ -48,18 +49,37 @@ class Survivor < ApplicationRecord
     total
   end
 
-  #TODO:
+  #TODO: refactor
   def remove_proposed_items
     swap_items.each do |si|
-      Invent
-      inventories.each do |i|
-        if i.item_id == si.id
+      inventories.each do |inventory|
+        if inventory.item_id == si[:id]
+          actual_quantity = inventory.quantity
+          new_quantity = si[:quantity]
 
-
+          inventory.update!(quantity: actual_quantity - new_quantity) if actual_quantity > new_quantity
+          inventory.destroy! if actual_quantity == new_quantity
         end
       end
     end
-    p 'asdad'
+  end
+
+  #TODO: refactor
+  def add_or_update_new_items
+    swap_items_new.each do |si|
+      add = true
+      inventories.each do |inventory|
+        if inventory.item_id == si[:id]
+          add = false
+          actual_quantity = inventory.quantity
+          new_quantity = si[:quantity]
+
+          inventory.update!(quantity: actual_quantity + new_quantity) if actual_quantity < new_quantity
+        end
+
+      end
+      Inventory.create(quantity: si[:quantity], item_id: si[:id], survivor: self) if add
+    end
   end
 
 end

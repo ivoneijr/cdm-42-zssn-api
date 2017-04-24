@@ -14,3 +14,9 @@ rails db:migrate
 rails db:seed
 rails s 
 ```
+
+#### Api documentation
+To access api documentation open root path.
+```
+http://localhost:3000/
+```

@@ -4,19 +4,26 @@ module ItemsHelper
     dealers = []
 
     dealer_1 = get_dealer(params[:dealer_1])
-    dealers.push(dealer_1) if dealer_1
-
     dealer_2 = get_dealer(params[:dealer_2])
-    dealers.push(dealer_2) if dealer_2
+
+    if dealer_1
+      dealers.push(dealer_1)
+      dealer_1.swap_items_new = params[:dealer_2][:swap_items]
+    end
+
+    if dealer_2
+      dealers.push(dealer_2)
+      dealer_2.swap_items_new = params[:dealer_1][:swap_items]
+    end
 
     dealers
   end
 
-  def get_dealer(params)
-    if survivor = Survivor.find_by_id(params[:id])
-      survivor.swap_items = params[:swap_items]
+  def get_dealer(dealer_params)
+    if survivor = Survivor.find_by_id(dealer_params[:id])
+      survivor.swap_items = dealer_params[:swap_items]
     else
-      @trade_errors.push({ can_not_find_dealer: "Couldn't find Survivor with 'id'=#{params[:id]}"})
+      @trade_errors.push({ can_not_find_dealer: "Couldn't find Survivor with 'id'=#{dealer_params[:id]}"})
     end
     survivor
   end
