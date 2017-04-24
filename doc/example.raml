@@ -1,0 +1,418 @@
+#%RAML 0.8
+title: ZSSN
+version: 1
+baseUri: http://host:port/api/v{version}
+documentation:
+  - title: Welcome
+    content: |
+      This documentation assist developers in the integration process with zssn-api.
+
+traits:
+  - paged:
+      queryParameters:
+        page_size:
+          description: The number of items per page
+          type: number
+          default: 20
+        page:
+          description: The page to return
+          type: number
+          default: 0
+      headers:
+        TESTING:
+          type: string
+          description: does a trait render its headers?
+
+/api/v1/items:
+  description: |
+    There's items list in the api that can be added to the inventory when a survivor is found and registred.
+
+    The survivors can make item trades.
+
+    Remember, you can't add new items.
+  get:
+    description: |
+      Show all items registred in database.
+
+    responses:
+      200:
+        description: Should return json array with all items.
+        body:
+          application/json:
+            example: |
+              [
+                {
+                  "id": 1,
+                  "description": "water",
+                  "points": 4
+                },
+                {
+                  "id": 2,
+                  "description": "medication",
+                  "points": 2
+                },
+                {
+                  "id": 3,
+                  "description": "ammunition",
+                  "points": 1
+                },
+                {
+                  "id": 4,
+                  "description": "food",
+                  "points": 3
+                }
+              ]
+  /trade:
+    description: |
+        The items in survivors inventory can be trade.
+    post:
+        description: |
+              Make items trade between two survivors.
+        body:
+          application/json:
+            example: |
+                {
+                    "dealer_1": {
+                        "id": 1,
+                        "swap_items": [
+                            {
+                                "id": 1,
+                                "quantity" : 2
+                            },
+                            {
+                                "id" : 2,
+                                "quantity": 1
+                            }
+                        ]
+                    },
+                    "dealer_2": {
+                        "id": 2,
+                        "swap_items": [
+                            {
+                                "id": 3,
+                                "quantity" : 10
+                            }
+                        ]
+                    }
+                }
+
+/api/v1/survivors:
+  description: |
+    There's a survivors list registered in the api.
+
+    You can list all survivors, add a new survivor, report infected survivor or update survivor location.
+
+  get:
+        description: |
+          Show all survivors registred in database.
+        responses:
+          200:
+            description: Should return json array with all survivors.
+            body:
+              application/json:
+                example: |
+                  [
+                    {
+                      "id": 1,
+                      "name": "Ivonei",
+                      "age": 26,
+                      "gender": "M",
+                      "last_latitude": "111111111",
+                      "last_longitude": "4445454.332",
+                      "infected": false,
+                      "inventory_points": 18,
+                      "inventories": [
+                        {
+                          "id": 1,
+                          "quantity": 3,
+                          "item": {
+                            "id": 1,
+                            "description": "water",
+                            "points": 4
+                          }
+                        },
+                        {
+                          "id": 2,
+                          "quantity": 3,
+                          "item": {
+                            "id": 2,
+                            "description": "medication",
+                            "points": 2
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": 2,
+                      "name": "Arianne",
+                      "age": 26,
+                      "gender": "F",
+                      "last_latitude": "222222",
+                      "last_longitude": "4445454.332",
+                      "infected": false,
+                      "inventory_points": 10,
+                      "inventories": [
+                        {
+                          "id": 3,
+                          "quantity": 10,
+                          "item": {
+                            "id": 3,
+                            "description": "ammunition",
+                            "points": 1
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "id": 3,
+                      "name": "Peter Parker",
+                      "age": 26,
+                      "gender": "M",
+                      "last_latitude": "333333",
+                      "last_longitude": "4445454.332",
+                      "infected": false,
+                      "inventory_points": 0,
+                      "inventories": []
+                    },
+                    {
+                      "id": 4,
+                      "name": "Bruce Bane",
+                      "age": 26,
+                      "gender": "M",
+                      "last_latitude": "444444",
+                      "last_longitude": "4445454.332",
+                      "infected": false,
+                      "inventory_points": 0,
+                      "inventories": []
+                    },
+                    {
+                      "id": 5,
+                      "name": "Tony Stark",
+                      "age": 26,
+                      "gender": "M",
+                      "last_latitude": "55555",
+                      "last_longitude": "4445454.332",
+                      "infected": false,
+                      "inventory_points": 0,
+                      "inventories": []
+                    }
+                  ]
+  post:
+    description: |
+      Add new survivor with/without inventory.
+      To know item_id you should GET api/v1/items
+    body:
+      application/json:
+        example: |
+            {
+                "survivor" : {
+                    "name": "Jessica Jones",
+                    "age": 32,
+                    "gender": "F",
+                    "last_latitude": "66666",
+                    "last_longitude": "66666",
+                    "inventories_attributes": [
+                        {
+                            "quantity" : 33,
+                            "item_id": 1
+                        }
+                    ]
+                }
+            }
+    responses:
+      201:
+        description: Survivor registred.
+        headers:
+          Location:
+            type: string
+            description: survivor path.
+            example: |
+              Location: /api/v1/survivros/{id}
+        body:
+            application/json:
+                example: |
+                    {
+                      "id": 6,
+                      "name": "Jessica Jones",
+                      "age": 32,
+                      "gender": "F",
+                      "last_latitude": "66666",
+                      "last_longitude": "66666",
+                      "infected": false,
+                      "inventory_points": 132,
+                      "inventories": [
+                        {
+                          "id": 4,
+                          "quantity": 33,
+                          "item": {
+                            "id": 1,
+                            "description": "water",
+                            "points": 4
+                          }
+                        }
+                      ]
+                    }
+
+  /{id}:
+    get:
+      description: Show specific survivors registred in database.
+      responses:
+        200: 
+          description: Should return json with survivors details.
+          body:
+            application/json:
+              example: |
+                {
+                    "id": 6,
+                    "name": "Jessica Jones",
+                    "age": 32,
+                    "gender": "F",
+                    "last_latitude": "66666",
+                    "last_longitude": "66666",
+                    "infected": false,
+                    "inventory_points": 132,
+                    "inventories": [
+                        {
+                            "id": 4,
+                            "quantity": 33,
+                            "item": {
+                                "id": 1,
+                                "description": "water",
+                                "points": 4
+                            }
+                        }
+                    ]
+                }
+    patch:
+        description: |
+          Update location, if you inform any other attribute (ex: name) it will be ignored.
+        body:
+            application/json:
+                example: |
+                    {
+                    	"survivor" : {
+                    	    "name": "Xuxa",
+                    		"last_latitude": "34343434",
+                    		"last_longitude": "111"
+                    	}
+                    }
+        responses:
+          200:
+            description: Return survivor details with updated location.
+            body:
+              application/json:
+                example: |
+                  {
+                    "id": 1,
+                    "name": "Ivonei",
+                    "age": 26,
+                    "gender": "M",
+                    "last_latitude": "34343434",
+                    "last_longitude": "111",
+                    "infected": false,
+                    "inventory_points": 18,
+                    "inventories": [
+                      {
+                        "id": 1,
+                        "quantity": 3,
+                        "item": {
+                          "id": 1,
+                          "description": "water",
+                          "points": 4
+                        }
+                      },
+                      {
+                        "id": 2,
+                        "quantity": 3,
+                        "item": {
+                          "id": 2,
+                          "description": "medication",
+                          "points": 2
+                        }
+                      }
+                    ]
+                  }
+    /report_infection:
+        post:
+            description: Report infection.
+            body:
+                application/json:
+                    example: |
+                        {
+                            "infected_id": "10"
+                        }
+            responses:
+              201:
+                description: Your report has been registered.
+                body:
+                    application/json:
+                        example: |
+                            {
+                              "message": "Your report has been registered."
+                            }
+
+/api/v1/reports:
+  description: |
+    Api provides some reports. You can GET all reports or a specific report informing a type with query parameters.
+  get:
+    description: |
+      Get all reports reports or specific.
+
+    queryParameters:
+        type:
+            description: |
+                If you want get a specific report, you should inform this param one or many of [ total_survivors, infected, not_infected, items_average_by_survivor, lost_points ].
+
+                By default ( if you don't inform any type ), the api will return all reports.
+            required: false
+            example: /api/v1/reports?types=infected, not_infected
+
+    responses:
+      200: 
+        description: Should return json array with reports.
+        body:
+          application/json:
+            example: |
+              [
+                {
+                  "type": "infected",
+                  "data": {
+                    "total": 0,
+                    "percentage": 0,
+                    "survivors": []
+                  }
+                },
+                {
+                  "type": "not_infected",
+                  "data": {
+                    "total": 6,
+                    "percentage": 100,
+                    "survivors": [
+                      {
+                        "id": 1,
+                        "name": "Ivonei"
+                      },
+                      {
+                        "id": 2,
+                        "name": "Arianne"
+                      },
+                      {
+                        "id": 3,
+                        "name": "Peter Parker"
+                      },
+                      {
+                        "id": 4,
+                        "name": "Bruce Bane"
+                      },
+                      {
+                        "id": 5,
+                        "name": "Tony Stark"
+                      },
+                      {
+                        "id": 6,
+                        "name": "Jessica "
+                      }
+                    ]
+                  }
+                }
+              ]

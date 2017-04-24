@@ -3,8 +3,7 @@ class API::V1::ReportsController < ApplicationController
 
   # GET /api/v1/reports
   def index
-    types = params[:types]
-    build_params types
+    types = build_params params[:types]
 
     render json: Report.build(types)
   end

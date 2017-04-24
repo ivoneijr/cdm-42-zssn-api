@@ -12,4 +12,8 @@ Rails.application.routes.draw do
       get '/reports', to: 'reports#index'
     end
   end
+
+  # match "" => lambda { |r| [ 404, {}, []] }, via: [:all]
+  get '*any', :to => redirect('/index.html')
+
 end
