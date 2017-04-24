@@ -11,7 +11,7 @@ ivonei = Survivor.create({ name: "Ivonei", age: 26, gender: "M", last_latitude: 
 arianne = Survivor.create({ name: "Arianne", age: 26, gender: "F", last_latitude: "222222", last_longitude: "4445454.332" })
 Survivor.create([
     { name: "Peter Parker", age: 26, gender: "M", last_latitude: "333333", last_longitude: "4445454.332" },
-    { name: "Bruce Bane", age: 26, gender: "M", last_latitude: "444444", last_longitude: "4445454.332" },
+    { name: "Bruce Banner", age: 26, gender: "M", last_latitude: "444444", last_longitude: "4445454.332" },
     { name: "Tony Stark", age: 26, gender: "M", last_latitude: "55555", last_longitude: "4445454.332" },
 ])
  

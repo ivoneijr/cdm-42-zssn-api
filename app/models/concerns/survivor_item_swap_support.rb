@@ -26,7 +26,7 @@ module Concerns
       swap_items.each do |i|
         item = Item.find(i[:id])
         self.swap_points = 0 unless self.swap_points
-        self.swap_points += (i[:quantity] * item.points)
+        self.swap_points += (i[:quantity].to_i * item.points)
       end
     end
 

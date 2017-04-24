@@ -49,13 +49,13 @@ class Survivor < ApplicationRecord
     total
   end
 
-  #TODO: refactor
+  #TODO: need refactor
   def remove_proposed_items
     swap_items.each do |si|
       inventories.each do |inventory|
-        if inventory.item_id == si[:id]
+        if inventory.item_id == si[:id].to_i
           actual_quantity = inventory.quantity
-          new_quantity = si[:quantity]
+          new_quantity = si[:quantity].to_i
 
           inventory.update!(quantity: actual_quantity - new_quantity) if actual_quantity > new_quantity
           inventory.destroy! if actual_quantity == new_quantity
@@ -64,21 +64,21 @@ class Survivor < ApplicationRecord
     end
   end
 
-  #TODO: refactor
+  #TODO: need refactor
   def add_or_update_new_items
     swap_items_new.each do |si|
       add = true
       inventories.each do |inventory|
-        if inventory.item_id == si[:id]
+        if inventory.item_id == si[:id].to_i
           add = false
           actual_quantity = inventory.quantity
-          new_quantity = si[:quantity]
+          new_quantity = si[:quantity].to_i
 
           inventory.update!(quantity: actual_quantity + new_quantity) if actual_quantity < new_quantity
         end
 
       end
-      Inventory.create(quantity: si[:quantity], item_id: si[:id], survivor: self) if add
+      Inventory.create(quantity: si[:quantity].to_i, item_id: si[:id].to_i, survivor: self) if add
     end
   end
 

@@ -21,17 +21,6 @@ gem 'active_model_serializers', '~> 0.10.0'
 # Annotates Rails/ActiveRecord Models, routes, fixtures, and others based on the database schema.
 gem 'annotate', '~> 2.7', '>= 2.7.1'
 
-# Use Redis adapter to run Action Cable in production
-# gem 'redis', '~> 3.0'
-# Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
-
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
-
-# Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
-# gem 'rack-cors'
-
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
@@ -46,3 +35,39 @@ end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
+
+
+group :development, :test do
+  gem 'rspec-rails', '~> 3.5'               # RSpec generators for Rails
+  gem 'rspec-cells'                         # RSpec tests for cells
+  gem 'spring-commands-rspec'               # Spring commands for RSpec
+  gem 'bullet'                              # Detect N+1 queries
+end
+
+group :test do
+  # RSpec augmentation
+  gem 'rspec-collection_matchers'       # RSpec collection matchers: have(1).item
+  gem 'rspec-activemodel-mocks'         # RSpec ActiveModel mocks
+  gem 'rspec-retry'                     # Retry random-failing examples
+
+  # test infrastructure
+  gem 'database_cleaner'                # Automatic database cleaning for tests
+  gem 'simplecov', require: false       # Code coverage
+  gem 'webmock'                         # Mock HTTP requests
+
+  # testing tools
+  gem 'airborne'                        # RSpec driven API testing framework
+  gem 'timecop'                         # Stub the time
+  gem 'vcr'                             # Record HTTP requests
+  gem 'machinist'                       # Fixtures replacement
+
+  # TeamCity support
+  gem 'rspec-teamcity', require: false  # RSpec TeamCity Reporter
+  gem 'simplecov-teamcity-summary',     # Code coverage for TeamCity
+      require: false
+
+  # format-specific testing
+  gem 'pdf-inspector',                  # Test PDF content
+      require: "pdf/inspector"
+  gem 'roo', '~> 2.3.1'                 # Read access for all common spreadsheet types
+end
