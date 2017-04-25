@@ -9,5 +9,5 @@
 
 class Item < ApplicationRecord
   has_many :inventories
-  has_many :survivor, :through => :inventories
+  has_many :survivor, through: :inventories
 end
