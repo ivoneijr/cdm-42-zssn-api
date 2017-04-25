@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-
   namespace :api do
     namespace :v1 do
       resources :survivors do
@@ -13,7 +12,5 @@ Rails.application.routes.draw do
     end
   end
 
-  # match "" => lambda { |r| [ 404, {}, []] }, via: [:all]
   get '*any', :to => redirect('/index.html')
-
 end
