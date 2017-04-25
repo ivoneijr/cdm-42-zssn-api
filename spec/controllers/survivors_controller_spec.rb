@@ -44,7 +44,7 @@ describe API::V1::SurvivorsController do
     let!(:jessica) {
       {
         survivor: {
-            name: 'Jessica Jone',
+            name: 'Jessica Jones',
             age: 32,
             gender: 'F',
             last_latitude: '66666',
