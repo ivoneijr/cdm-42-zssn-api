@@ -10,7 +10,7 @@
 #
 require 'rails_helper'
 
-describe Survivor do
+describe InfectionReport do
   describe 'on create' do
 
     let!(:bruce) { Survivor.create({ name: "Bruce Banner", age: 26, gender: "M", last_latitude: "444444", last_longitude: "4445454.332" }) }

@@ -10,8 +10,8 @@
 #
 
 class InfectionReport < ApplicationRecord
-  belongs_to :reporter, class_name: "Survivor", foreign_key: 'reporter_id'
-  belongs_to :infected, class_name: "Survivor", foreign_key: 'infected_id'
+  belongs_to :reporter, class_name: "Survivor"
+  belongs_to :infected, class_name: "Survivor"
 
   after_create :verify_infectation
 
