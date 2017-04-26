@@ -8,7 +8,7 @@ Api developed with rails 5, using postgresql.
 ```
 git clone https://github.com/ivoneijr/cdm-42-zssn-api.git
 cd cdm-42-zssn-api
-bunlde install
+bundle install
 rails db:create
 rails db:migrate
 rails db:seed
